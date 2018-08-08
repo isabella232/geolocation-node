@@ -579,7 +579,7 @@ public class GeoLocationNode implements Node {
                     break;
                 case MODE_IP_SHARED_STATE:
                     if (proxyAttribute.length() > 0) {
-                        loginIP = parseIP(context.sharedState.get(proxyAttribute).toString()) + "::" + Instant.now().toString();
+                        loginIP = parseIP(context.sharedState.get(proxyAttribute).asString()) + "::" + Instant.now().toString();
                         debug.message("[" + DEBUG_FILE + "]: setLoginIP().IP : " + loginIP);
                     } else {
                         debug.message("[" + DEBUG_FILE + "]: The shared state attribute name must be specified if node is configured in shared state mode.");
@@ -748,7 +748,7 @@ public class GeoLocationNode implements Node {
                     break;
                 case MODE_IP_SHARED_STATE:
                     if (proxyAttribute.length() > 0) {
-                        currentIP = parseIP(context.sharedState.get(proxyAttribute).toString()) + "::" + Instant.now().toString();
+                        currentIP = parseIP(context.sharedState.get(proxyAttribute).asString()) + "::" + Instant.now().toString();
                         debug.message("[" + DEBUG_FILE + "]: setCurrentIP().IP : " + currentIP);
                     } else {
                         debug.message("[" + DEBUG_FILE + "]: The shared state attribute name must be specified if node is configured in shared state mode.");
