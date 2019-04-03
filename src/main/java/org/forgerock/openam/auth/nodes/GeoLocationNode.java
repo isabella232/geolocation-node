@@ -21,7 +21,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.sun.identity.idm.AMIdentity;
 import com.sun.identity.shared.debug.Debug;
 import com.sun.identity.sm.RequiredValueValidator;
-import org.forgerock.guava.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 import org.forgerock.json.JsonValue;
 import org.forgerock.openam.annotations.sm.Attribute;
 import org.forgerock.openam.auth.node.api.*;
@@ -585,7 +585,8 @@ public class GeoLocationNode implements Node {
         Map<String, Set> map = new HashMap<String, Set>();
         Set<String> values = new HashSet<String>();
 
-        String ip;
+
+        //String ip;
 
         try {
             switch (modeIP) {
@@ -604,7 +605,17 @@ public class GeoLocationNode implements Node {
                     break;
                 case MODE_IP_SHARED_STATE:
                     if (proxyAttribute.length() > 0) {
-                        loginIP = parseIP(context.sharedState.get(proxyAttribute).asString()) + "::" + Instant.now().toString();
+                        String stringIP;
+                        stringIP = parseIP(context.sharedState.get(proxyAttribute).asString());
+                        if (stringIP.startsWith("\"")) {
+                            stringIP = stringIP.substring(1, stringIP.length());
+                        }
+                        if (stringIP.endsWith("\"")) {
+                            stringIP = stringIP.substring(0, stringIP.length() - 1);
+                        }
+
+                        //currentIP = parseIP(context.sharedState.get(proxyAttribute).asString()) + "::" + Instant.now().toString();
+                        loginIP = stringIP + "::" + Instant.now().toString();
                         debug.message("[" + DEBUG_FILE + "]: setLoginIP().IP : " + loginIP);
                     } else {
                         debug.message("[" + DEBUG_FILE + "]: The shared state attribute name must be specified if node is configured in shared state mode.");
@@ -773,7 +784,19 @@ public class GeoLocationNode implements Node {
                     break;
                 case MODE_IP_SHARED_STATE:
                     if (proxyAttribute.length() > 0) {
-                        currentIP = parseIP(context.sharedState.get(proxyAttribute).asString()) + "::" + Instant.now().toString();
+                        String stringIP;
+                        stringIP = parseIP(context.sharedState.get(proxyAttribute).asString());
+                        if (stringIP.startsWith("\"")) {
+                            stringIP = stringIP.substring(1, stringIP.length());
+                        }
+                        if (stringIP.endsWith("\"")) {
+                            stringIP = stringIP.substring(0, stringIP.length() - 1);
+                        }
+
+                        //currentIP = parseIP(context.sharedState.get(proxyAttribute).asString()) + "::" + Instant.now().toString();
+                        currentIP = stringIP + "::" + Instant.now().toString();
+                        debug.message("[" + DEBUG_FILE + "]: SHARED STATE CURRENT IP:" + currentIP);
+
                         debug.message("[" + DEBUG_FILE + "]: setCurrentIP().IP : " + currentIP);
                     } else {
                         debug.message("[" + DEBUG_FILE + "]: The shared state attribute name must be specified if node is configured in shared state mode.");
