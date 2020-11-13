@@ -311,6 +311,12 @@ public class GeoLocationNode implements Node {
 
                         setCurrentIP(context);
 
+                        if (currentIP.startsWith("192.168") || currentIP.equals("127.0.0.1")) {
+                            debug.warning("[" + DEBUG_FILE + "]: Local Address - Unknown risk");
+                            action = goTo(GeoLocationOutcome.UNKNOWN);
+                            return action.replaceSharedState(newState).build();
+                        }
+
                         debug.message("[" + DEBUG_FILE + "]: " + " LOGIN : " + loginIP.split("::")[0]);
                         debug.message("[" + DEBUG_FILE + "]: " + " CURRENT : " + currentIP.split("::")[0]);
 
@@ -735,8 +741,6 @@ public class GeoLocationNode implements Node {
                     String testTime = Instant.now().toString();
                     currentIP = parseIP(context.request.clientIp.toString()) + "::" + Instant.now().toString();
                     if (currentIP.substring(currentIP.length()).equals("]")) currentIP = currentIP.substring(1,currentIP.length()-1);
-                    //-- <<DEBUG>> --
-                    //currentIP = "74.104.191.74" + "::" + Instant.now().toString();
                     debug.message("[" + DEBUG_FILE + "]: currentIP().IP : " + currentIP);
                     break;
                 case MODE_IP_PROXY:
