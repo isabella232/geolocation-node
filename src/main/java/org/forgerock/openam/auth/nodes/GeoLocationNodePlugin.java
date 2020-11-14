@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GeoLocationNodePlugin extends AbstractNodeAmPlugin {
 
-	static private String currentVersion = "1.1.2";
+	static private String currentVersion = "6.5.2";
 	
     /** 
      * Specify the Map of list of node classes that the plugin is providing. These will then be installed and
